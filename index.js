@@ -1,11 +1,8 @@
 const yargs = require('yargs')
 const pkg = require('./package.json')
-const {
-	addNote,
-	getNotes,
-	printNotes,
-	removeNote,
-} = require('./notes.controller')
+const { addNote, printNotes, removeNote } = require('./notes.controller')
+
+console.log(process.argv[2]) // [2] — параметры после вызова скрипта из файла
 
 yargs.version(pkg.version)
 

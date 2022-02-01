@@ -32,7 +32,6 @@ async function printNotes() {
 }
 
 async function removeNote(id) {
-	console.log('id', typeof id)
 	const notes = await getNotes()
 	const newNotes = notes.filter((e) => e.id !== id.toString())
 
