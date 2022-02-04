@@ -26,27 +26,24 @@ async function getNotes() {
 
 async function printNotes() {
 	const notes = await getNotes()
-	notes.forEach((e) => {
-		console.log(e.id, ' ', e.title)
-	})
+	notes.forEach((e) => {})
 }
 
 async function removeNote(id) {
 	const notes = await getNotes()
 	const newNotes = notes.filter((e) => e.id !== id.toString())
 
-	console.log(chalk.red(`Note ${id} deleted`))
+	console.log(chalk.red.inverse(`Note ${id} deleted`))
 
 	await fs.writeFile(notesPath, JSON.stringify(newNotes))
 }
 
 async function editNote(id, data) {
 	const notes = await getNotes()
-	console.log('notes', notes)
-	const noteIndex = notes.findIndex((e) => e.id !== id.toString())
-	notes[noteIndex] = { id, title: data }
+	const noteIndex = notes.findIndex((e) => e.id === id.toString())
+	notes[noteIndex] = data
 
-	console.log(chalk.red(`Note ${id} edited`))
+	console.log(chalk.blue.inverse(`Note ${id} edited`))
 
 	await fs.writeFile(notesPath, JSON.stringify(notes))
 }
