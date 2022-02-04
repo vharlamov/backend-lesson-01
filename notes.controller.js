@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 const path = require('path')
-// const chalk = require('chalk') Не работает
+const chalk = require('chalk')
 
 const notesPath = path.join(__dirname, 'db.json')
 
@@ -15,7 +15,7 @@ async function addNote(title) {
 	notes.push(note)
 
 	await fs.writeFile(notesPath, JSON.stringify(notes))
-	// console.log(chalk.green.inverse('Note was added'))
+	console.log(chalk.green.inverse('Note was added'))
 }
 
 async function getNotes() {
@@ -35,7 +35,20 @@ async function removeNote(id) {
 	const notes = await getNotes()
 	const newNotes = notes.filter((e) => e.id !== id.toString())
 
+	console.log(chalk.red(`Note ${id} deleted`))
+
 	await fs.writeFile(notesPath, JSON.stringify(newNotes))
+}
+
+async function editNote(id, data) {
+	const notes = await getNotes()
+	console.log('notes', notes)
+	const noteIndex = notes.findIndex((e) => e.id !== id.toString())
+	notes[noteIndex] = { id, title: data }
+
+	console.log(chalk.red(`Note ${id} edited`))
+
+	await fs.writeFile(notesPath, JSON.stringify(notes))
 }
 
 module.exports = {
@@ -43,4 +56,5 @@ module.exports = {
 	getNotes,
 	printNotes,
 	removeNote,
+	editNote,
 }
