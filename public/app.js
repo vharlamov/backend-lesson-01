@@ -5,9 +5,7 @@ document.addEventListener('click', (e) => {
 		remove(id).then(() => {
 			e.target.closest('li').remove()
 		})
-	}
-
-	if (e.target.dataset.type === 'edit') {
+	} else if (e.target.dataset.type === 'edit') {
 		console.log('data in app', e.target.closest('li').firstChild.data.trim())
 
 		const data = prompt(
@@ -15,7 +13,6 @@ document.addEventListener('click', (e) => {
 			e.target.closest('li').firstChild.data.trim()
 		)
 
-		console.log('data from prompt', data)
 		edit(id, data)
 			.then(() => {
 				console.log('edit.then', id, data)
@@ -31,9 +28,12 @@ async function remove(id) {
 
 async function edit(id, data) {
 	console.log('Edit in app run', data)
+
 	await fetch(`/${id}`, {
 		method: 'PUT',
-		body: JSON.stringify({ id, title: data }),
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ id: id, title: data }),
 	})
+
 	console.log('edit fetch completed')
 }
