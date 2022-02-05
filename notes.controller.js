@@ -8,8 +8,8 @@ async function addNote(title) {
 	const notes = await getNotes()
 
 	const note = {
-		title,
 		id: Date.now().toString(),
+		title,
 	}
 
 	notes.push(note)

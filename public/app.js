@@ -1,45 +1,69 @@
-document.addEventListener('click', (e) => {
+let noteInnerHtml = ''
+let nowEdited = false
+let liElem = ''
+
+document.addEventListener('click', async (e) => {
 	const id = e.target.dataset.id
-	let noteInnerHtml = ''
+	const type = e.target.dataset.type
 
-	if (e.target.dataset.type === 'remove') {
-		remove(id).then(() => {
-			e.target.closest('li').remove()
-		})
-	} else if (e.target.dataset.type === 'edit') {
-		// const data = prompt(
-		// 	'Новый текст: ',
-		// 	e.target.closest('li').firstChild.data.trim()
-		// )
-		noteInnerHtml = e.target.closest('li').innerHTML
-		const inputValue = e.target.closest('li').firstChild.data.trim()
+	switch (type) {
+		case 'remove':
+			remove(id).then(() => {
+				e.target.closest('li').remove()
+			})
+			break
+		case 'edit':
+			if (nowEdited) return
+			nowEdited = true
+			liElem = e.target.closest('li')
 
-		edit(id, data).then(() => {
-			e.target.closest('li').firstChild.data = data
-		})
+			noteInnerHtml = liElem.innerHTML
+
+			const inputValue = liElem.children[0].firstChild.data.trim()
+			liElem.innerHTML = getForm(inputValue, id)
+			break
+		case 'submit':
+			const data = e.target.form[0].value
+
+			edit(id, data)
+
+			liElem.innerHTML = noteInnerHtml
+			liElem.children[0].firstChild.data = data
+
+			nowEdited = false
+			liElem = ''
+			break
+		case 'cancel':
+			liElem.innerHTML = noteInnerHtml
+			nowEdited = false
+			liElem = ''
+			break
+		default:
+			return
 	}
 })
 
-function getForm(value) {
-	return `<form action="/" method="post">
-  <input type="text" value=${value}/>
+function getForm(value, id) {
+	return `<form action="/" method="put">
+  <div class="d-flex justify-content-between align-items-center">
+  <input type="text" value="${value}"/>
 <div class="d-flex">
   <button
-    class="btn btn-primary me-2"
-    data-type="edit"
+    class="btn btn-success me-2"
+    data-type="submit"
     data-id=${id}
     type="submit"
   >
-    Обновить
+    Сохранить
   </button>
   <button
     class="btn btn-danger"
-    data-type="remove"
-    data-id="<%= notes[i].id %>"
+    data-type="cancel"
+    data-id=${id}
   >
     Отмена
   </button>
-</div></form>`
+</div></div></form>`
 }
 
 async function remove(id) {
