@@ -18,15 +18,13 @@ document.addEventListener('click', (e) => {
 			nowEdited = true
 
 			noteInnerHtml = liElem.innerHTML
-			// console.log(noteInnerHtml)
 
 			const inputValue = liElem.firstChild.data.trim()
-			// console.log(inputValue)
 			liElem.innerHTML = getForm(inputValue, id)
 			break
 		case 'submit':
-			// console.log(liElem.children[0].value)
 			const data = liElem.children[0].value
+			if (!data) return
 
 			edit(id, data)
 
@@ -48,7 +46,7 @@ document.addEventListener('click', (e) => {
 
 function getForm(value, id) {
 	return `
-  <input type="text" value="${value}"/>
+  <input type="text" class="form-control me-3" value="${value}"/>
 <div class="d-flex">
   <button
     class="btn btn-success me-2"
