@@ -18,17 +18,20 @@ document.addEventListener('click', (e) => {
 			nowEdited = true
 
 			noteInnerHtml = liElem.innerHTML
+			// console.log(noteInnerHtml)
 
-			const inputValue = liElem.children[0].firstChild.data.trim()
+			const inputValue = liElem.firstChild.data.trim()
+			// console.log(inputValue)
 			liElem.innerHTML = getForm(inputValue, id)
 			break
 		case 'submit':
-			const data = e.target.form[0].value
+			// console.log(liElem.children[0].value)
+			const data = liElem.children[0].value
 
 			edit(id, data)
 
 			liElem.innerHTML = noteInnerHtml
-			liElem.children[0].firstChild.data = data
+			liElem.firstChild.data = data
 
 			nowEdited = false
 			liElem = ''
@@ -44,15 +47,13 @@ document.addEventListener('click', (e) => {
 })
 
 function getForm(value, id) {
-	return `<form action="/" method="put">
-  <div class="d-flex justify-content-between align-items-center">
+	return `
   <input type="text" value="${value}"/>
 <div class="d-flex">
   <button
     class="btn btn-success me-2"
     data-type="submit"
     data-id=${id}
-    type="submit"
   >
     Сохранить
   </button>
@@ -63,7 +64,7 @@ function getForm(value, id) {
   >
     Отмена
   </button>
-</div></div></form>`
+</div>`
 }
 
 async function remove(id) {

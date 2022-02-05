@@ -1,40 +1,50 @@
 let noteInnerHtml = ''
 let nowEdited = false
+let liElem = ''
 
 document.addEventListener('click', (e) => {
 	const id = e.target.dataset.id
 	const type = e.target.dataset.type
+	liElem = e.target.closest('li')
 
-	if (type === 'remove') {
-		remove(id).then(() => {
-			e.target.closest('li').remove()
-		})
-	} else if (type === 'edit') {
-		if (nowEdited) return
-		nowEdited = true
-		const liElem = e.target.closest('li')
+	switch (type) {
+		case 'remove':
+			remove(id).then(() => {
+				liElem.remove()
+			})
+			break
+		case 'edit':
+			if (nowEdited) return
+			nowEdited = true
 
-		noteInnerHtml = liElem.innerHTML
-		const inputValue = liElem.children[0].firstChild.data.trim()
-		liElem.innerHTML = getForm(inputValue, id)
-	} else if (type === 'submit') {
-		const data = e.target.form[0].value
-		const liElem = e.target.closest('li')
+			noteInnerHtml = liElem.innerHTML
 
-		liElem.innerHTML = noteInnerHtml
+			const inputValue = liElem.children[0].firstChild.data.trim()
+			liElem.innerHTML = getForm(inputValue, id)
+			break
+		case 'submit':
+			const data = e.target.form[0].value
 
-		edit(id, data).then(() => {
+			edit(id, data)
+
+			liElem.innerHTML = noteInnerHtml
 			liElem.children[0].firstChild.data = data
-		})
-		nowEdited = false
-	} else if (type === 'cancel') {
-		e.target.closest('li').innerHTML = noteInnerHtml
-		nowEdited = false
+
+			nowEdited = false
+			liElem = ''
+			break
+		case 'cancel':
+			liElem.innerHTML = noteInnerHtml
+			nowEdited = false
+			liElem = ''
+			break
+		default:
+			return
 	}
 })
 
 function getForm(value, id) {
-	return `<form action="/" method="put">
+	return `<form>
   <div class="d-flex justify-content-between align-items-center">
   <input type="text" value="${value}"/>
 <div class="d-flex">
@@ -42,7 +52,6 @@ function getForm(value, id) {
     class="btn btn-success me-2"
     data-type="submit"
     data-id=${id}
-    type="submit"
   >
     Сохранить
   </button>
