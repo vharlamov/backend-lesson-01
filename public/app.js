@@ -5,17 +5,17 @@ let liElem = ''
 document.addEventListener('click', async (e) => {
 	const id = e.target.dataset.id
 	const type = e.target.dataset.type
+	liElem = e.target.closest('li')
 
 	switch (type) {
 		case 'remove':
 			remove(id).then(() => {
-				e.target.closest('li').remove()
+				liElem.remove()
 			})
 			break
 		case 'edit':
 			if (nowEdited) return
 			nowEdited = true
-			liElem = e.target.closest('li')
 
 			noteInnerHtml = liElem.innerHTML
 
