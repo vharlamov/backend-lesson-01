@@ -1,0 +1,21 @@
+{
+	"name": "training",
+	"version": "1.0.2",
+	"description": "node training",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"serve": "nodemon index.js"
+	},
+	"keywords": ["node", "javascript"],
+	"author": "Valera545 <v.gmail.com>",
+	"license": "ISC",
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"yargs": "^17.3.1"
+	},
+	"devDependencies": {
+		"@types/yargs": "^17.3.1",
+		"nodemon": "^2.0.15"
+	}
+}

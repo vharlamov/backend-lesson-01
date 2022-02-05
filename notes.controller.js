@@ -32,11 +32,19 @@ async function printNotes() {
 }
 
 async function removeNote(id) {
-	console.log('id', typeof id)
 	const notes = await getNotes()
 	const newNotes = notes.filter((e) => e.id !== id.toString())
 
 	await fs.writeFile(notesPath, JSON.stringify(newNotes))
+}
+
+async function editNote(id, title) {
+	const notes = await getNotes()
+	const noteIndex = notes.findIndex((e) => e.id === id.toString())
+	notes[noteIndex] = { title, id: id.toString() }
+	console.log(notes)
+
+	await fs.writeFile(notesPath, JSON.stringify(notes))
 }
 
 module.exports = {
@@ -44,4 +52,5 @@ module.exports = {
 	getNotes,
 	printNotes,
 	removeNote,
+	editNote,
 }

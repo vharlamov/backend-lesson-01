@@ -5,6 +5,7 @@ const {
 	getNotes,
 	printNotes,
 	removeNote,
+	editNote,
 } = require('./notes.controller')
 
 yargs.version(pkg.version)
@@ -37,6 +38,14 @@ yargs.command({
 	describe: 'Remove note by id',
 	handler({ id }) {
 		removeNote(id)
+	},
+})
+
+yargs.command({
+	command: 'edit',
+	describe: 'Edit note by id',
+	handler({ id, title }) {
+		editNote(id, title)
 	},
 })
 
