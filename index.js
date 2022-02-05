@@ -66,5 +66,5 @@ app.put('/:id', async (req, res) => {
 })
 
 app.listen(port, () => {
-	console.log(chalk.greenBright(`Server has been started on port ${port}...`))
+	console.log(chalk.yellow(`Server has been started on port ${port}...`))
 })

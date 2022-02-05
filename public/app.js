@@ -2,7 +2,7 @@ let noteInnerHtml = ''
 let nowEdited = false
 let liElem = ''
 
-document.addEventListener('click', async (e) => {
+document.addEventListener('click', (e) => {
 	const id = e.target.dataset.id
 	const type = e.target.dataset.type
 	liElem = e.target.closest('li')
