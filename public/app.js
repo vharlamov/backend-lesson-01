@@ -2,7 +2,7 @@ let noteInnerHtml = ''
 let nowEdited = false
 let liElem = ''
 
-document.addEventListener('click', (e) => {
+document.addEventListener('click', async (e) => {
 	const id = e.target.dataset.id
 	const type = e.target.dataset.type
 	liElem = e.target.closest('li')
@@ -19,17 +19,17 @@ document.addEventListener('click', (e) => {
 
 			noteInnerHtml = liElem.innerHTML
 
-			const inputValue = liElem.firstChild.data.trim()
+			const inputValue = liElem.querySelector('span').innerText.trim()
 			liElem.innerHTML = getForm(inputValue, id)
 			break
 		case 'submit':
-			const data = liElem.children[0].value
+			const data = liElem.querySelector('input').value
 			if (!data) return
 
-			edit(id, data)
+			await edit(id, data)
 
 			liElem.innerHTML = noteInnerHtml
-			liElem.firstChild.data = data
+			liElem.querySelector('span').innerText = data
 
 			nowEdited = false
 			liElem = ''
